@@ -1,0 +1,8 @@
+venv
+.idea
+.vscode
+__pycache__
+*.zip
+*.7z
+my_project.egg-info
+*.csv
