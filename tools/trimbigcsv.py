@@ -15,13 +15,14 @@ current_file = os.path.abspath(__file__)
 # 获取当前文件所在的目录路径
 current_dir = os.path.dirname(current_file)
 
-input=current_dir+"\\..\\last\\loan\\data\\train.csv"
-out=current_dir+"\\..\\last\\loan\\data\\train_part.csv"
-trimbigcsv(input, out, 100000)
-input=current_dir+"\\..\\last\\loan\\data\\testA.csv"
-out=current_dir+"\\..\\last\\loan\\data\\testA_part.csv"
-trimbigcsv(input, out, 60)
-# input="C:\\Users\\yegetables\\Downloads\\news_train_set.csv"
-# out="C:\\Users\\yegetables\\PycharmProjects\\pythonProject\\news_part.csv"
-# trimbigcsv(input,out,10000)
+if __name__ == '__main__':
+    input=current_dir+"\\..\\last\\loan\\data\\train.csv"
+    out=current_dir+"\\..\\last\\loan\\data\\train_part.csv"
+    trimbigcsv(input, out, 100000)
+    input=current_dir+"\\..\\last\\loan\\data\\testA.csv"
+    out=current_dir+"\\..\\last\\loan\\data\\testA_part.csv"
+    trimbigcsv(input, out, 60)
+    # input="C:\\Users\\yegetables\\Downloads\\news_train_set.csv"
+    # out="C:\\Users\\yegetables\\PycharmProjects\\pythonProject\\news_part.csv"
+    # trimbigcsv(input,out,10000)
 
