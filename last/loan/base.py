@@ -307,22 +307,10 @@ def self_split(train):
     # ## 选择其类别为0和1的样本 （不包括类别为2的样本）
     data_target_part = train['isDefault']
     data_features_part = train[[x for x in train.columns if x != 'isDefault' and 'id']]
-
-#    data_target_part=data_target_part.values
-#    data_features_part=data_features_part.values
-
-    # X_train = X_train.loc[:, X_train.columns != 'isDefault'].values
-    # y_train=  X_train['isDefault'].values
-    # X_test = X_test.loc[:, X_test.columns != 'isDefault'].values
-    # y_test = y_test['isDefault'].values
-    
     # ## 测试集大小为20%， 80%/20%分
     # # random_state参数是用来设置随机种子
     X_train, X_test, y_train, y_test = train_test_split(data_features_part, data_target_part, test_size = 0.2, random_state = 2024)
     # print(X_train.head())
     # print(y_train.head())
-    # print("X_train[id]=",X_train['id'])
-    # print("X_train[issueDate]=",X_train['issueDate'])
-    # X = X_train.drop('id', axis=1).values.tolist()
     # print(X)
     return X_train, X_test, y_train, y_test
