@@ -6,6 +6,30 @@ gini：使用基尼不纯度来进行划分，这是默认值。基尼不纯度�
 
 entropy：使用信息熵来进行划分。信息熵是指从数据集中随机选择两个样本，这两个样本被错误地分类的期望信息量。
 
-log_loss：对数损失函数，也称为逻辑回归损失。它在分类问题中用于评估分类器的概率估计。
 
 
+
+
+
+# build
+
+在使用venv（虚拟环境）的情况下，如果您想要在项目中的A模块的C文件中让Python解释器的包扫描路径为项目根目录，可以通过以下方法实现：
+
+在项目的根目录中创建一个名为setup.py的文件，用于定义项目的安装配置。
+
+在setup.py文件中添加如下内容：
+
+from setuptools import setup, find_packages
+
+setup(
+    name='my_project',
+    version='1.0',
+    packages=find_packages(),
+)
+然后，在项目根目录下运行以下命令，将项目安装到venv环境中：
+pip install -e .
+这将会将整个项目安装到venv环境中，并且会将项目根目录添加到Python解释器的包扫描路径中。
+
+现在，在A模块的C文件中，您可以直接导入项目内的其他模块，Python解释器会优先搜索项目根目录。例如：
+from module_name import function_name
+通过将项目安装到venv环境中，您可以确保项目根目录会被正确添加到Python解释器的包扫描路径中，从而使您能够在任何模块中导入项目内的其他模块。这种方法适用于需要在项目中的任何地方导入其他模块的情况。

@@ -19,7 +19,7 @@ def getData():
     pd.set_option('display.max_columns',None)
     isPart = True
     cache= False
-    num=100000
+    num=10000
     df_train = lode_origin_data(isPart,cache,num)
     if not cache:
         df_train=clear_data(df_train)
@@ -87,6 +87,10 @@ def TestAndShowResult(name,model,X_train,X_test,y_train,y_test):
     # 计算平均绝对误差
     mae = metrics.mean_absolute_error(y_test,test_predict)
     print(f'平均绝对误差：{mae}')
+    if name!="C45":
+        # 将特征名称和重要性值按顺序配对打印
+        for feature_name, importance in zip(X_train.columns, model.feature_importances_):
+            print(f"Feature: {feature_name}, Importance: {importance}")
     
     # 绘制AUC曲线
     # try:
