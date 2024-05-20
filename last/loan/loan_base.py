@@ -120,26 +120,13 @@ def clear_data(df_train):
         most_num_train = df_train[is_na_cols[i]].value_counts().index[0]
         df_train[is_na_cols[i]] = df_train[is_na_cols[i]].fillna(most_num_train)  
         
-        # most_num_test = df_test[is_na_cols[i]].value_counts().index[0]
-        # df_test[is_na_cols[i]] = df_test[is_na_cols[i]].fillna(most_num_test)
-
-    # df_train = df[df['train_test'] == 'train']
-    # df_test = df[df['train_test'] == 'test']
-    # df = pd.concat([df_train, df_test], ignore_index=True)
     df=df_train
     df.reset_index(inplace=True)
     df.drop('index',inplace=True,axis=1)
 
-    # del df_train['train_test']
-    # del df_test['train_test']
-    # print("merge and fill common number, info",df.info())
-    # print("clear1 off ",df_train.shape,df_test.shape)
-
-    # del df_test['isDefault']
-
     # 描述性统计分析的操作。具体而言，describe()方法会计算该列的统计指标，包括计数、均值、标准差、最小值、25%分位数、中位数（50%分位数）、75%分位数和最大值。
-    # df['policyCode'].describe()
-    # 字段只有一个值，不用了
+    # df['policyCode'].describe(）
+    
     df.drop('policyCode',axis=1,inplace=True)
 
     df['n13'] = df['n13'].apply(lambda x: 1 if x not in [0] else x)
@@ -157,9 +144,12 @@ def clear_data(df_train):
     df['subGrade'].value_counts()
 
 
+    # 标签编码（Label Encoding），将分类数据转换为数值数据
     df['employmentLength'] = df['employmentLength'].apply(encoder)
+    # 填充列中类别值的出现次数。
     df['employmentLength'].value_counts()
 
+    # 应用自定义编码函数转换日期
     df['issueDate'] = df['issueDate'].apply(encoder1)
     df['issueDate'].value_counts()  
 
@@ -287,15 +277,12 @@ def plot_roc_curve(y_test, preds):
 
 
 def self_split(train):
-    # # ## 为了正确评估模型性能，将训练数据划分为训练集和测试集，并在训练集上训练模型，在测试集上验证模型性能。
     from sklearn.model_selection import train_test_split
-    # ## 选择其类别为0和1的样本 （不包括类别为2的样本）
+    # # ## 为了正确评估模型性能，将训练数据划分为训练集和测试集，并在训练集上训练模型，在测试集上验证模型性能。
+    # ## 划分训练目标特征和数据其他特征
     data_target_part = train['isDefault']
     data_features_part = train[[x for x in train.columns if x != 'isDefault' and 'id']]
     # ## 测试集大小为20%， 80%/20%分
     # # random_state参数是用来设置随机种子
     X_train, X_test, y_train, y_test = train_test_split(data_features_part, data_target_part, test_size = 0.2, random_state = 2024)
-    # print(X_train.head())
-    # print(y_train.head())
-    # print(X)
     return X_train, X_test, y_train, y_test

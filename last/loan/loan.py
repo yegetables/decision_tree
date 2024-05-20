@@ -5,7 +5,7 @@ import os
 import warnings
 warnings.filterwarnings('ignore')
 
-from last.loan.loan_base import lode_origin_data,clear_data,self_split
+from last.loan.loan_base import lode_origin_data,clear_data,self_split,getAUC,plot_roc_curve
 from tree import tree_base
 import json
 
@@ -19,7 +19,7 @@ def getData():
     pd.set_option('display.max_columns',None)
     isPart = True
     cache= False
-    num=10000
+    num=1000
     df_train = lode_origin_data(isPart,cache,num)
     if not cache:
         df_train=clear_data(df_train)
@@ -110,6 +110,9 @@ if __name__ == '__main__':
         "C45",
     ]
     for name in names:
+        # 根据参数不同构建不同算法的决策树
         tree=tree_base.build_tree(name,X_train,y_train)
+        # 训练模型
         getModel(name,tree,X_train,y_train)
+        # 测试模型性能并展示结果
         TestAndShowResult(name,tree,X_train,X_test,y_train,y_test)

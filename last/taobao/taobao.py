@@ -93,6 +93,9 @@ def clearData(data):
     see_no_data['source']=pd.Categorical(see_no_data['source']).codes.astype('int64')
     see_no_data['payment_page']=see_no_data['payment_page'].astype('int64')
     see_no_data['sex']=pd.Categorical(see_no_data['sex']).codes.astype('int64')
+    
+    # print(see_no_data.head())
+    see_no_data.to_csv(current_dir+'/data/seenodata_process.csv',index=False)
     # see_no_data
     #0代表Ads，1代表Direct ，2代表Seo
     #0代表女性，1代表男性
@@ -173,6 +176,7 @@ def TestAndShowResult(name,model,X_train,X_test,y_train,y_test):
 
 if __name__ == '__main__':
     data=lode_origin_data()
+    data.to_csv(current_dir+'/data/origin_process.csv',index=False)
     see_no_data=clearData(data)
     x = see_no_data[['new_user', 'age','sex','source','total_pages_visited']]
     y = see_no_data['payment_page']
