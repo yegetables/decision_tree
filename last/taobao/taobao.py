@@ -6,6 +6,7 @@ import scipy.stats as stats
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+import time
 plt.rcParams["font.sans-serif"] = ["SimHei"]  # windows系统
 plt.rcParams['axes.unicode_minus']=False      #正常显示符号
 
@@ -112,66 +113,26 @@ def getModel(name,tree,X_train,y_train):
         # 训练模型
     model=None
     print(f"训练{name}模型 start")
-    # print("X_train\n",X_train)
-    # print("y_train\n",y_train)
     if name=="C45":
         xv=X_train.values
         yv=y_train.values
+        start_train_time = time.time()
         model=tree.fit(xv,yv,indexContinuousFeatures_=tuple(range(len(xv[0]))))
-        model=model.pruning()  # 剪枝
+        end_train_time = time.time()
+        training_time = end_train_time - start_train_time
+        # model=model.pruning()  # 剪枝
     else:
+        start_train_time = time.time()
         model=tree.fit(X_train,y_train)
-    print(f"训练{name}模型 success")    
+        end_train_time = time.time()
+        training_time = end_train_time - start_train_time
+                
+    print(f"训练{name}模型 success,training_time={training_time}")    
         # 保存模型到文件
         # with open(model_path, 'wb') as file:
             # pickle.dump(model, file)    
     return model
-def TestAndShowResult(name,model,X_train,X_test,y_train,y_test):
-    from sklearn import metrics
-    zero_list= np.array([0]*len(y_test))
-    zero_rank= metrics.accuracy_score(y_test,zero_list)
-    print("zero_rank=",zero_rank)
-    # 在训练集和测试集上分布利用训练好的模型进行预测
-    if name=="C45":
-        xv=X_train.values
-        xt=X_test.values
-        train_predict=model.predict(xv)
-        test_predict = model.predict(xt)
-    else:
-        train_predict = model.predict(X_train)
-        test_predict = model.predict(X_test)
-    if name=="C45":
-        # model.summary()
-        # model.evaluate(X_test,y_test)
-        pass
-    
-    print(f"决策树：{name},预测测试集结果如下：")
-    # print("预测结果",test_predict)
-    # print("实际结果",y_test)
 
-    ## 利用accuracy（准确度）【预测正确的样本数目占总预测样本数目的比例】评估模型效果
-    print('The accuracy of the validation on the training data set is :',metrics.accuracy_score(y_train,train_predict))
-    print('The accuracy of the validation on the test data set is :',metrics.accuracy_score(y_test,test_predict))
-    
-    # 计算均方误差
-    mse = metrics.mean_squared_error(y_test,test_predict)
-    print(f'均方误差：{mse}')
-    # 计算平均绝对误差
-    mae = metrics.mean_absolute_error(y_test,test_predict)
-    print(f'平均绝对误差：{mae}')
-    if name!="C45":
-        # 将特征名称和重要性值按顺序配对打印
-        for feature_name, importance in zip(X_train.columns, model.feature_importances_):
-            print(f"Feature: {feature_name}, Importance: {importance}")
-    
-    # 绘制AUC曲线
-    # try:
-        # from sklearn.metrics import roc_auc_score
-        # roc_auc = getAUC(y_test, model.predict_proba(X_test)[:,1])
-        # print("AUC ( Area Under the ROC Curve ) =",roc_auc)
-        # plot_roc_curve(y_test, model.predict_proba(X_test)[:,1])
-    # except:
-        # pass
 
 
 if __name__ == '__main__':
@@ -191,6 +152,7 @@ if __name__ == '__main__':
     for name in names:
         tree=tree_base.build_tree(name,X_train,y_train)
         getModel(name,tree,X_train,y_train)
+        from last.loan.loan import TestAndShowResult
         TestAndShowResult(name,tree,X_train,X_test,y_train,y_test)
         
 # 各模型的特征系数最大为total_pages_visited，即浏览页面次数，其次为年龄；而是否为新用户,性别以及来源都很小程度的影响第四阶段转化率

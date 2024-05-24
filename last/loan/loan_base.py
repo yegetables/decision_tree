@@ -32,79 +32,6 @@ def lode_origin_data(isPart,cache=False,num=0):
 
     return df_train
 
-# def analysize_data(df_train,df):
-#     # 非数值型
-#     non_numeric_cols = [
-#         'grade', 'subGrade', 'employmentLength', 'issueDate', 'earliesCreditLine'
-#     ]
-#     # 数值型
-#     numeric_cols = [
-#         x for x in df_test.columns if x not in non_numeric_cols + ['isDefault']
-#     ]
-#     print("non_numeric_cols",non_numeric_cols)
-#     print("numeric_cols",numeric_cols)
-    
-#     # 画箱式图
-#     column = numeric_cols # 列表头
-#     fig = plt.figure(figsize=(20, 40))  # 指定绘图对象宽度和高度
-#     for i in range(len(column)):
-#         plt.subplot(13, 4, i + 1)  # 13行3列子图
-#         sns.boxplot(df[column[i]], orient="v", width=0.5)  # 箱式图
-#         plt.ylabel(column[i], fontsize=8)
-#     plt.show()
-
-#     continuous_cols = [
-#         'id', 'loanAmnt', 'interestRate', 'installment', 'employmentTitle', 'homeOwnership',
-#         'annualIncome', 'purpose', 'postCode', 'regionCode', 'dti', 'delinquency_2years',
-#         'ficoRangeLow', 'ficoRangeHigh', 'openAcc', 'pubRec', 'revolBal', 'revolUtil','totalAcc',
-#         'title', 'n14'
-#     ] + [f'n{i}' for i in range(11)] 
-#     non_continuous_cols = [
-#         x for x in numeric_cols if x not in continuous_cols
-#     ]
-
-#     dist_cols = 6
-#     dist_rows = len(df_test[continuous_cols].columns)
-#     plt.figure(figsize=(4*dist_cols,4*dist_rows))
-
-#     i=1
-#     for col in df_test[continuous_cols].columns:
-#         ax=plt.subplot(dist_rows,dist_cols,i)
-#         ax = sns.kdeplot(df_train[continuous_cols][col], color="Red", shade=True)
-#         ax = sns.kdeplot(df_test[continuous_cols][col], color="Blue", shade=True)
-#         ax.set_xlabel(col)
-#         ax.set_ylabel("Frequency")
-#         ax = ax.legend(["train","test"])
-        
-#         i+=1
-#     plt.show()
-
-
-#     train_cols = 6
-#     train_rows = len(df[continuous_cols].columns)
-#     plt.figure(figsize=(4*train_cols,4*train_rows))
-
-#     i=0
-#     for col in df[continuous_cols].columns:
-#         i+=1
-#         ax=plt.subplot(train_rows,train_cols,i)
-#         sns.distplot(df[continuous_cols][col],fit=stats.norm)
-#         i+=1
-#         ax=plt.subplot(train_rows,train_cols,i)
-#         res = stats.probplot(df[continuous_cols][col], plot=plt)
-#     plt.show()
-
-
-#     for i in range(len(non_continuous_cols)):
-#         print("%s这列的非连续性数据的分布："%non_continuous_cols[i])
-#         print(df[non_continuous_cols[i]].value_counts())
-
-#     for i in range(len(non_numeric_cols)):
-#         print("%s这列非数值型数据的分布：\n"%non_numeric_cols[i])
-#         print(df[non_numeric_cols[i]].value_counts())
-
-#     # 描述性统计分析的操作。具体而言，describe()方法会计算该列的统计指标，包括计数、均值、标准差、最小值、25%分位数、中位数（50%分位数）、75%分位数和最大值。
-#     df['policyCode'].describe()
 
 
 # 处理数据
@@ -250,29 +177,6 @@ from sklearn.metrics import precision_recall_fscore_support, roc_curve, auc
 import warnings
 warnings.filterwarnings('ignore')
 
-# 在Jupyter上画图
-# %matplotlib inline
-
-
-# 绘制AUC曲线
-def getAUC(y_test, preds):
-    fpr, tpr, _ = metrics.roc_curve(y_test, preds)
-    roc_auc = metrics.auc(fpr, tpr)
-    return roc_auc
-
-import time
-def plot_roc_curve(y_test, preds):
-    fpr, tpr, _ = metrics.roc_curve(y_test, preds)
-    roc_auc = metrics.auc(fpr, tpr)
-    plt.title('Receiver Operating Characteristic')
-    plt.plot(fpr, tpr, 'b', label = 'AUC = %0.2f' % roc_auc)
-    plt.legend(loc = 'lower right')
-    plt.plot([0, 1], [0, 1],'r--')
-    plt.xlim([-0.01, 1.01])
-    plt.ylim([-0.01, 1.01])
-    plt.ylabel('True Positive Rate')
-    plt.xlabel('False Positive Rate')
-    plt.show()
 
 
 
